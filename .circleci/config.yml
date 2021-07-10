@@ -8,87 +8,99 @@ executors:
       _JAVA_OPTIONS: "-Xmx3g"
       GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
+commands:
+  custom_env:
+    steps:
+      - run:
+          name: Preparing custom environment variables
+          command: printf "export ORG_GRADLE_PROJECT_buildNumber=$CIRCLE_BUILD_NUM\nexport ORG_GRADLE_PROJECT_buildTag=$CIRCLE_TAG" >> $BASH_ENV
+      - run:
+          name: Show custom environment variables
+          command: |
+            echo "ORG_GRADLE_PROJECT_buildNumber=$ORG_GRADLE_PROJECT_buildNumber"
+            echo "ORG_GRADLE_PROJECT_buildTag=$ORG_GRADLE_PROJECT_buildTag"
+
 jobs:
   checkout_run_test:
     executor: openjdk_executor
     description: "Perform all setup steps"
     steps:
-        - checkout
-        - run:
-            name: Create output directories
-            command: "mkdir -vp ~/circleci-artifacts ~/circleci-test-results ~/circleci-test-results/junit/"
+      - custom_env
+      - checkout
+      - run:
+          name: Create output directories
+          command: mkdir -vp ~/circleci-artifacts ~/circleci-test-results ~/circleci-test-results/junit/
         
-        - restore_cache:
-            keys:
-                - gradle-repo-v5-{{ .Branch }}-{{ checksum "gradle.properties" }}
-                - gradle-repo-v5-{{ .Branch }}-
-                - gradle-repo-v5-
-        - run:
-            name: Download uncached dependencies
-            command: ./gradlew dependencies
-            no_output_timeout: 1h
+      - restore_cache:
+          keys:
+            - gradle-repo-v5-{{ .Branch }}-{{ checksum "gradle.properties" }}
+            - gradle-repo-v5-{{ .Branch }}-
+            - gradle-repo-v5-
+      - run:
+          name: Download uncached dependencies
+          command: ./gradlew dependencies
+          no_output_timeout: 1h
+
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: gradle-repo-v5-{{ .Branch }}-{{ checksum "gradle.properties" }}
+
+      - run:
+          name: Compile
+          command: ./gradlew --refresh-dependencies --info --stacktrace clean assemble
         
-        - save_cache:
-            paths:
-                - ~/.gradle
-            key: gradle-repo-v5-{{ .Branch }}-{{ checksum "gradle.properties" }}
-        
-        - run:
-            name: Compile
-            command: ./gradlew -PbuildNumber=$CIRCLE_BUILD_NUM -PbuildAccess=opensource -PbuildTag=$CIRCLE_TAG --refresh-dependencies --info --stacktrace clean assemble
-        
-        # Test
-        - run:
-            name: Run tests
-            command: xvfb-run ./gradlew -PbuildAccess=opensource -PbuildNumber=$CIRCLE_BUILD_NUM -PbuildTag=$CIRCLE_TAG --info --stacktrace test
-        
-        - run:
-            name: Collect test results
-            command: find . -type f -regex ".*/build/test-results/.*xml" -exec cp -v {} ~/circleci-test-results/junit/ \;
-        - run:
-            name: Collect artifacts
-            command: '[ ! -d build/reports ] || cp -R build/reports ~/circleci-artifacts/'
-        
-          # Teardown
-          # Save test results
-        - store_test_results:
-            path: ~/circleci-test-results
-          # Save artifacts
-        - store_artifacts:
-            path: ~/circleci-artifacts
-        - store_artifacts:
-            path: ~/circleci-test-results
-        
-        - run: rm -rf .git
-        # Persist the specified paths (workspace/echo-output) into the workspace for use in build/test jobs.
-        - persist_to_workspace:
-            # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
-            # taken to be the root directory of the workspace.
-            root: ~/
-            # Must be relative path from root
-            paths:
-                - .gradle
-                - project
+#      # Test
+#      - run:
+#          name: Run tests
+#          command: xvfb-run ./gradlew --info --stacktrace test
+#
+#      - run:
+#          name: Collect test results
+#          command: find . -type f -regex ".*/build/test-results/.*xml" -exec cp -v {} ~/circleci-test-results/junit/ \;
+#      - run:
+#          name: Collect artifacts
+#          command: '[ ! -d build/reports ] || cp -R build/reports ~/circleci-artifacts/'
+#
+#        # Teardown
+#        # Save test results
+#      - store_test_results:
+#          path: ~/circleci-test-results
+#        # Save artifacts
+#      - store_artifacts:
+#          path: ~/circleci-artifacts
+#      - store_artifacts:
+#          path: ~/circleci-test-results
+
+      - run: rm -rf .git
+      # Persist the specified paths (workspace/echo-output) into the workspace for use in build/test jobs.
+      - persist_to_workspace:
+          # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
+          # taken to be the root directory of the workspace.
+          root: ~/
+          # Must be relative path from root
+          paths:
+            - .gradle
+            - project
 
   deploy_snapshot:
     executor: openjdk_executor
     steps:
-        - attach_workspace:
-            at: ~/
-        - run:
-            name: Deploy snapshot to Artifactory
-            command: ./gradlew -PbuildAccess=opensource -PbuildNumber=$CIRCLE_BUILD_NUM -PbuildTag=$CIRCLE_TAG -PartifactoryUrl=$ARTIFACTORY_URL -PartifactoryRepository=$SNAPSHOT_ARTIFACTORY_REPOSITORY -PartifactoryUsername=$ARTIFACTORY_USERNAME -PartifactoryPassword=$ARTIFACTORY_PASSWORD --info --stacktrace artifactoryPublish
-  deploy_release:
-    executor: openjdk_executor
-    steps:
+      - custom_env
       - attach_workspace:
           at: ~/
       - run:
-          name: Deploy release to Artifactory
-          command: ./gradlew -PbuildAccess=opensource -PbuildNumber=$CIRCLE_BUILD_NUM -PbuildTag=$CIRCLE_TAG -PartifactoryUrl=$ARTIFACTORY_URL -PartifactoryRepository=$RELEASE_ARTIFACTORY_REPOSITORY -PartifactoryUsername=$ARTIFACTORY_USERNAME -PartifactoryPassword=$ARTIFACTORY_PASSWORD --info --stacktrace artifactoryPublish
+          name: Deploy snapshot
+          command: ./gradlew --info --stacktrace publishToSonatype
+  deploy_release:
+    executor: openjdk_executor
+    steps:
+      - custom_env
+      - attach_workspace:
+          at: ~/
       - run:
-          name: Deploy release to Bintray
-          command: ./gradlew -PbuildAccess=opensource -PbuildNumber=$CIRCLE_BUILD_NUM -PbuildTag=$CIRCLE_TAG -PbintrayUser=$BINTRAY_USER -PbintrayKey=$BINTRAY_KEY -PbintrayRepo=$BINTRAY_REPO -PbintrayUserOrg=$BINTRAY_USER_ORG --info --stacktrace clean bintrayUpload
+          name: Deploy release
+          command: ./gradlew --info --stacktrace publishToSonatype closeSonatypeStagingRepository
 
 workflows:
   version: 2
@@ -96,20 +108,20 @@ workflows:
     jobs:
       - checkout_run_test:
           filters:
-              tags:
-                  only: /[0-9.]+(-(a|b|rc)[0-9]+)?/
+            tags:
+              only: /[0-9.]+(-(a|b|rc)[0-9]+)?/
       - deploy_snapshot:
           requires:
-              - checkout_run_test
-          filters:  
-              branches:
-                  only: /((release|hotfix|support)/[0-9.]+(-(a|b|rc)[0-9]+)?|master|develop)/
+            - checkout_run_test
+          filters:
+            branches:
+              only: /((release|hotfix|support)/[0-9.]+(-(a|b|rc)[0-9]+)?|master|develop)/
       - deploy_release:
           requires:
-              - checkout_run_test
+            - checkout_run_test
           filters:
-              tags:
-                  only: /[0-9.]+(-(a|b|rc)[0-9]+)?/
-              branches:
-                  ignore: /.*/
+            tags:
+              only: /[0-9.]+(-(a|b|rc)[0-9]+)?/
+            branches:
+              ignore: /.*/
 
