@@ -44,24 +44,63 @@ public class DBTable extends DocumentElement {
         return body;
     }
 
+    /**
+     * This must be set
+     *
+     * @param body
+     */
+    public void setBody(List<List<DocumentElement>> body) {
+        this.body = body;
+    }
+
     public String getCaption() {
         return caption;
+    }
+
+    public void setCaption(String caption) {
+        this.caption = caption;
     }
 
     public List<List<DocumentElement>> getHeaders() {
         return headers;
     }
 
+    /**
+     * This must be set
+     *
+     * @param headers
+     */
+    public void setHeaders(List<List<DocumentElement>> headers) {
+        this.headers = headers;
+    }
+
     public List<DBColSpec> getColspecs() {
         return colspecs;
+    }
+
+    public void setColspecs(List<DBColSpec> colspecs) {
+        this.colspecs = colspecs;
     }
 
     public int getCols() {
         return cols;
     }
 
+    /**
+     * this must be set (the cols is the max number of cols in your table)
+     *
+     * @param cols
+     */
+    public void setCols(int cols) {
+        this.cols = cols;
+    }
+
     public String getStyle() {
         return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
     }
 
     public boolean isShowIfEmpty() {
@@ -78,45 +117,6 @@ public class DBTable extends DocumentElement {
 
     public void setExcludeFromList(boolean excludeFromList) {
         this.excludeFromList = excludeFromList;
-    }
-
-    /**
-     * This must be set
-     *
-     * @param body
-     */
-    public void setBody(List<List<DocumentElement>> body) {
-        this.body = body;
-    }
-
-    public void setCaption(String caption) {
-        this.caption = caption;
-    }
-
-    /**
-     * This must be set
-     *
-     * @param headers
-     */
-    public void setHeaders(List<List<DocumentElement>> headers) {
-        this.headers = headers;
-    }
-
-    public void setColspecs(List<DBColSpec> colspecs) {
-        this.colspecs = colspecs;
-    }
-
-    /**
-     * this must be set (the cols is the max number of cols in your table)
-     *
-     * @param cols
-     */
-    public void setCols(int cols) {
-        this.cols = cols;
-    }
-
-    public void setStyle(String style) {
-        this.style = style;
     }
 
     public boolean isTranspose() {
@@ -147,10 +147,10 @@ public class DBTable extends DocumentElement {
         //this whole thing looks complicated because of transposing colspans and rowspans
         //the new table wouldn't have a header since the new header would be part of the body
         removeAllNulls(); //every cell should be a document element, this is to remove any inconsistent user set nulls
-        addNulls(); //go through the current table and add in nulls according to colspans and rowspans 
+        addNulls(); //go through the current table and add in nulls according to colspans and rowspans
         //so the table is truly m x n, every cell should be either null or a document element
 
-        //do the transpose, if i is index of the col and j is index of the row in the old table, 
+        //do the transpose, if i is index of the col and j is index of the row in the old table,
         //the new table's rows would be i and cols would be j
         List<List<DocumentElement>> newbody = new ArrayList<List<DocumentElement>>();
         if (headers != null && headers.size() > 0) {
@@ -220,15 +220,35 @@ public class DBTable extends DocumentElement {
                 }
             }
         }
-        this.body = newbody;
         this.headers = null;
+        List<DocumentElement> newColumnHeader = newbody.get(newbody.size() - 1);
+        if (isRowHeader(newColumnHeader)) { //if true assume to be having row and column headers.
+            this.headers = new ArrayList<List<DocumentElement>>();
+            this.headers.add(newColumnHeader);
+            newbody.remove(newbody.size() - 1);
+        }
+        this.body = newbody;
         this.cols = !newbody.isEmpty() ? newbody.get(0).size() : 0;
-        List<DBColSpec> newcolspecs = new ArrayList<DBColSpec>();
+        List<DBColSpec> newcolspecs = new ArrayList<>();
         for (int i = 1; i <= cols; i++) {
             newcolspecs.add(new DBColSpec(i));
         }
         this.colspecs = newcolspecs;
 
+    }
+
+    // return true if the transposed cell(0,0) has empty text string
+    private boolean isRowHeader(List<DocumentElement> newLastRow) {
+        DocumentElement newLastRowFirstColumn = newLastRow.get(0);
+        if (newLastRowFirstColumn instanceof DBTableEntry) {
+            DBTableEntry dt_newLastRowFirstColumn = ((DBTableEntry) newLastRowFirstColumn);
+            if (dt_newLastRowFirstColumn.getMorerows() == 0 && dt_newLastRowFirstColumn.getNamest() == null && dt_newLastRowFirstColumn.getNameend() == null) {
+                if (dt_newLastRowFirstColumn.getChildren().get(0) instanceof DBText) {
+                    return ((DBText) dt_newLastRowFirstColumn.getChildren().get(0)).getText().toString().length() == 0;
+                }
+            }
+        }
+        return false;
     }
 
     private void removeAllNulls() {

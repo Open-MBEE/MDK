@@ -2,6 +2,7 @@
 <resourceDescriptor critical="false"
                     date="${build.timestamp}"
                     description="DocGen, MMS syncing, and common profiles"
+                    homePage="https://www.openmbee.org"
                     id="91110"
                     mdVersionMax="higher"
                     mdVersionMin="18.4"
@@ -9,7 +10,7 @@
                     product="JPL Model Development Kit"
                     type="Plugin">
     <version human="${human.version}" resource="${internal.version}" internal="${internal.version}"/>
-    <provider name="NASA / Jet Propulsion Laboratory / Caltech"/>
+    <provider name="OpenMBEE"/>
     <edition>Reader</edition>
     <edition>Community</edition>
     <edition>Standard</edition>

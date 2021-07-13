@@ -3,7 +3,7 @@
         name="Model Development Kit"
         internalVersion="${internal.version}"
         version="${human.version}"
-        provider-name="NASA / Jet Propulsion Laboratory / Caltech"
+        provider-name="OpenMBEE"
         class-lookup="LocalFirst"
         class="gov.nasa.jpl.mbee.mdk.MDKPlugin">
     <requires>

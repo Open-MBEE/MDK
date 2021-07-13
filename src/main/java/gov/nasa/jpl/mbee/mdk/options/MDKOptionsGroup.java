@@ -2,10 +2,7 @@ package gov.nasa.jpl.mbee.mdk.options;
 
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.options.AbstractPropertyOptionsGroup;
-import com.nomagic.magicdraw.properties.BooleanProperty;
-import com.nomagic.magicdraw.properties.Property;
-import com.nomagic.magicdraw.properties.PropertyResourceProvider;
-import com.nomagic.magicdraw.properties.StringProperty;
+import com.nomagic.magicdraw.properties.*;
 import com.nomagic.magicdraw.ui.ImageMap16;
 import gov.nasa.jpl.mbee.mdk.util.MDUtils;
 
@@ -26,7 +23,8 @@ public class MDKOptionsGroup extends AbstractPropertyOptionsGroup {
             ENABLE_CHANGE_LISTENER_ID = "ENABLE_CHANGE_LISTENER_ID",
             ENABLE_COORDINATED_SYNC_ID = "ENABLE_COORDINATED_SYNC_ID",
             CUSTOM_USER_SCRIPT_DIRECTORIES_ID = "CUSTOM_USER_SCRIPT_DIRECTORIES_ID",
-            MMS_AUTHENTICATION_CHAIN = "MMS_AUTHENTICATION_CHAIN";
+            MMS_AUTHENTICATION_CHAIN = "MMS_AUTHENTICATION_CHAIN",
+    		DOCBOOK_TO_PDF_STYLESHEET = "DOCBOOK_TO_PDF_STYLESHEET";	
 
     public MDKOptionsGroup() {
         super(ID);
@@ -138,6 +136,20 @@ public class MDKOptionsGroup extends AbstractPropertyOptionsGroup {
         property.setGroup(GROUP);
         addProperty(property, true);
     }
+    
+    
+    public String getDocBookToPDFStyleSheet() {
+    	Property p = getProperty(DOCBOOK_TO_PDF_STYLESHEET);
+		return (String) p.getValue();
+    }
+    
+    public void setDocBookToPDFStyleSheet(String value) {
+    	FileProperty property = new FileProperty(DOCBOOK_TO_PDF_STYLESHEET, value, FileProperty.FILES_ONLY);
+    	property.setResourceProvider(PROPERTY_RESOURCE_PROVIDER);
+    	property.setGroup(GROUP);
+    	addProperty(property, true);
+    }
+    
 
     public List<String> getAuthenticationChain() {
         String val = PROPERTY_RESOURCE_PROVIDER.getString(MMS_AUTHENTICATION_CHAIN, null);
@@ -173,7 +185,7 @@ public class MDKOptionsGroup extends AbstractPropertyOptionsGroup {
         setUserScriptDirectory("");
         setAuthenticationChain(
                 "gov.nasa.jpl.mbee.mdk.tickets.BasicAuthAcquireTicketProcessor,gov.nasa.jpl.mbee.mdk.tickets.AuthenticationChainError");
-
+        setDocBookToPDFStyleSheet("");
     }
 
     private static final String MDK_OPTIONS_NAME = "MDK_OPTIONS_NAME";

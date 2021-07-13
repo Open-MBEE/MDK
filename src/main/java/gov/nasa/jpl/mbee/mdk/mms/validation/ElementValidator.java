@@ -107,7 +107,7 @@ public class ElementValidator implements RunnableWithProgress {
             processServerElements(clientElementMap, serverElementMap);
         } catch(IOException e) {
             e.printStackTrace();
-            Application.getInstance().getGUILog().log("[Error] An error occurred when attempting to process elements from the server.");
+            Application.getInstance().getGUILog().log("[ERROR] An error occurred when attempting to process elements from the server.");
         }
 
         LinkedHashSet<String> elementKeySet = new LinkedHashSet<>();

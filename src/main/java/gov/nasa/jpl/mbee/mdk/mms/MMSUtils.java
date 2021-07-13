@@ -218,7 +218,7 @@ public class MMSUtils {
             }
 
             jsonGenerator.writeStringField("source", "magicdraw");
-            jsonGenerator.writeStringField("mdkVersion", MDKPlugin.getVersion());
+            jsonGenerator.writeStringField("mdkVersion", MDKPlugin.getInstance().getDescriptor().getVersion());
             jsonGenerator.writeEndObject();
         }
 

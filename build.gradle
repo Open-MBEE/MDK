@@ -18,6 +18,8 @@ String buildNumber = project.hasProperty('buildNumber') ? project.getProperty('b
 String timestamp = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm").format(LocalDateTime.now())
 // classpathLibraries as defined in bin/[magicdraw|csm].properties#CLASSPATH
 String[] classpathLibraries = ['lib/patch.jar','lib/brand.jar','lib/brand_api.jar','lib/md.jar','lib/md_api.jar','lib/md_common.jar','lib/md_common_api.jar','lib/md_common_test.jar','lib/tw_common.jar','lib/tw_common_api.jar','lib/launcher.jar','lib/activation.jar','lib/annotation.jar','lib/batik.jar','lib/bridj-0.7.0.jar','lib/bundles/ch.qos.logback.classic_1.2.3.jar','lib/bundles/ch.qos.logback.core_1.2.3.jar','lib/bundles/cmof_1.4.0.202006020804/cmof14.jar','lib/bundles/cmof_1.4.0.202006020804/tas.jar','lib/bundles/com.esotericsoftware.kryo_2.22.0.201401231130.jar','lib/bundles/com.google.guava_18.0.0.jar','lib/bundles/com.nomagic.annotations_1.0.0/com.nomagic.annotation-1.0.jar','lib/bundles/com.nomagic.ci.binary_17.0.5.v20200602-0758.jar','lib/bundles/com.nomagic.ci.metamodel.project_17.0.5.v20200602-0758.jar','lib/bundles/com.nomagic.ci.persistence.local_17.0.5.v20200602-0758.jar','lib/bundles/com.nomagic.ci.persistence_17.0.5.v20200602-0758.jar','lib/bundles/com.nomagic.ci.services_17.0.5.v20200602-0758.jar','lib/bundles/com.nomagic.ci_17.0.5.v20200602-0758.jar','lib/bundles/com.nomagic.esi.api.messages_1.0.0.v20191101-2128.jar','lib/bundles/com.nomagic.esi.api_1.0.0.v20191101-2128.jar','lib/bundles/com.nomagic.esi.client.core_1.0.0.v20191101-2128.jar','lib/bundles/com.nomagic.esi.common_1.0.0.v20191101-2128.jar','lib/bundles/com.nomagic.esi.config_1.0.0.v20191101-2128.jar','lib/bundles/com.nomagic.esi.core.msg_1.0.0.v20191101-2128.jar','lib/bundles/com.nomagic.esi.emf_1.0.0.v20191101-2128.jar','lib/bundles/com.nomagic.esi.helper_1.0.0.v20191101-2128.jar','lib/bundles/com.nomagic.esi.net_1.0.0.v20191101-2128.jar','lib/bundles/com.nomagic.esi.serializer.akka_1.0.0.v20191101-2128.jar','lib/bundles/com.nomagic.esi.serializer_1.0.0.v20191101-2128.jar','lib/bundles/com.nomagic.esi.service.actorsystem_1.0.0.v20191101-2128.jar','lib/bundles/com.nomagic.esi.services_1.0.0.v20191101-2128.jar','lib/bundles/com.nomagic.esi.stream_1.0.0.v20191101-2128.jar','lib/bundles/com.nomagic.esi.supervisor_1.0.0.v20191101-2128.jar','lib/bundles/com.nomagic.magicdraw.ce_18.1.0.202006020804.jar','lib/bundles/com.nomagic.magicdraw.core.diagram_18.1.0.202006020804.jar','lib/bundles/com.nomagic.magicdraw.core.project.options_18.1.0.202006020804.jar','lib/bundles/com.nomagic.magicdraw.core_1.0.0.202006020804.jar','lib/bundles/com.nomagic.magicdraw.esi.binary.metamodel_18.1.0.202006020804.jar','lib/bundles/com.nomagic.magicdraw.esi.esiproject_18.1.0.202006020804.jar','lib/bundles/com.nomagic.magicdraw.esi.uuidmap_18.1.0.202006020804.jar','lib/bundles/com.nomagic.magicdraw.foundation_2.0.0.202006020804.jar','lib/bundles/com.nomagic.magicdraw.osgi.fragment_1.0.0.202006020804.jar','lib/bundles/com.nomagic.magicdraw.security_18.3.0.202006020804.jar','lib/bundles/com.nomagic.magicdraw.uml2_2.5.1.202006020804.jar','lib/bundles/com.nomagic.magicdraw_17.0.5.202006020804.jar','lib/bundles/com.teamdev.jxbrowser.chromium.internal.linux64_6.24.1.jar','lib/bundles/com.teamdev.jxbrowser.chromium.internal.mac_6.24.1.jar','lib/bundles/com.teamdev.jxbrowser.chromium.internal.win32_6.24.1.jar','lib/bundles/com.teamdev.jxbrowser.chromium.internal.win64_6.24.1.jar','lib/bundles/com.teamdev.jxbrowser.chromium_6.24.1.jar','lib/bundles/com.typesafe.akka.actor_2.5.10.jar','lib/bundles/com.typesafe.akka.cluster.tools_2.5.10.jar','lib/bundles/com.typesafe.akka.cluster_2.5.10.jar','lib/bundles/com.typesafe.akka.osgi_2.5.10.jar','lib/bundles/com.typesafe.akka.protobuf_2.5.10.jar','lib/bundles/com.typesafe.akka.remote_2.5.10.jar','lib/bundles/com.typesafe.akka.slf4j_2.5.10.jar','lib/bundles/com.typesafe.akka.stream_2.5.10.jar','lib/bundles/com.typesafe.config_1.3.0.jar','lib/bundles/com.typesafe.sslconfig_0.2.2.jar','lib/bundles/de.schlichtherle.truezip_7.4.3.v20200602-0758/lib/truezip-driver-zip-7.4.3.jar','lib/bundles/de.schlichtherle.truezip_7.4.3.v20200602-0758/lib/truezip-kernel-7.4.3.jar','lib/bundles/gnu.trove_3.0.3/lib/trove-3.0.3.jar','lib/bundles/io.aeron.client_1.7.0.jar','lib/bundles/io.aeron.driver_1.7.0.jar','lib/bundles/io.dropwizard.metrics.core_3.1.2.jar','lib/bundles/io.dropwizard.metrics.graphite_3.1.2.jar','lib/bundles/io.netty.buffer_4.1.21.Final.jar','lib/bundles/io.netty.codec_4.1.21.Final.jar','lib/bundles/io.netty.common_4.1.21.Final.jar','lib/bundles/io.netty.handler_4.1.21.Final.jar','lib/bundles/io.netty.resolver_4.1.21.Final.jar','lib/bundles/javax.jmi_1.0.0.202006020804/javax_jmi-1_0-fr.jar','lib/bundles/io.netty.transport_4.1.21.Final.jar','lib/bundles/joda-time_2.9.1.jar','lib/bundles/lz4-java_1.3.0.jar','lib/bundles/org.agrona_0.9.12.jar','lib/bundles/org.apache.commons.codec_1.9.0.v20170208-1614.jar','lib/bundles/org.apache.commons.collections_3.2.1.jar','lib/bundles/org.apache.commons.compress_1.3.0.jar','lib/bundles/org.apache.commons.io_2.4.0.jar','lib/bundles/org.apache.commons.lang_2.6.0.v201404270220.jar','lib/bundles/org.apache.commons.logging_1.1.1.v201101211721.jar','lib/bundles/org.apache.felix.scr_2.0.10.v20170501-2007.jar','lib/bundles/org.apache.httpcomponents.httpclient_4.5.3.jar','lib/bundles/org.apache.httpcomponents.httpcore_4.4.6.v20170210-0925.jar','lib/bundles/org.apache.log4j_1.2.15.v201005080500.jar','lib/bundles/org.apache.servicemix.bundles.jsr305_2.0.1.1.jar','lib/bundles/org.apiguardian_1.1.0.v20190826-0900.jar','lib/bundles/org.eclipse.core.contenttype_3.6.0.v20170207-1037.jar','lib/bundles/org.eclipse.core.jobs_3.9.2.v20171030-1027.jar','lib/bundles/org.eclipse.core.runtime_3.13.0.v20170207-1030.jar','lib/bundles/org.eclipse.emf.common_2.13.0.v20170609-0707.jar','lib/bundles/org.eclipse.emf.ecore.xmi_2.13.0.v20170609-0707.jar','lib/bundles/org.eclipse.emf.ecore_2.13.0.v20170609-0707.jar','lib/bundles/org.eclipse.equinox.app_1.3.400.v20150715-1528.jar','lib/bundles/org.eclipse.equinox.common_3.9.0.v20170207-1454.jar','lib/bundles/org.eclipse.equinox.ds_1.5.0.v20170307-1429.jar','lib/bundles/org.eclipse.equinox.preferences_3.7.0.v20170126-2132.jar','lib/bundles/org.eclipse.equinox.registry_3.7.0.v20170222-1344.jar','lib/bundles/org.eclipse.osgi.services_3.6.0.v20170228-1906.jar','lib/bundles/org.eclipse.osgi.util_3.4.0.v20170111-1608.jar','lib/bundles/org.eclipse.osgi_3.12.50.v20170928-1321.jar','lib/bundles/org.eclipse.uml2.common_1.5.0.v200905041045.jar','lib/bundles/org.hamcrest.core_1.3.0.v201303031735.jar','lib/bundles/org.jboss.netty_3.10.6.Final.jar','lib/bundles/org.json_1.0.0.255610281323.jar','lib/bundles/org.junit.jupiter.api_5.5.1.v20190826-0900.jar','lib/bundles/org.junit.jupiter.params_5.5.1.v20190826-0900.jar','lib/bundles/org.junit.platform.commons_1.5.1.v20190826-0900.jar','lib/bundles/org.junit_4.12.0.v201504281640/junit.jar','lib/bundles/org.opentest4j_1.2.0.v20190826-0900.jar','lib/bundles/org.reactivestreams.reactive-streams_1.0.2.jar','lib/bundles/org.scala-lang.modules.scala-java8-compat_0.8.0.jar','lib/bundles/org.scala-lang.modules.scala-parser-combinators_1.0.4.jar','lib/bundles/org.scala-lang.scala-library_2.12.4.v20171010-220511-VFINAL-c2a5883.jar','lib/bundles/org.uncommons.maths_1.2.2.201301151508/lib/uncommons-maths-1.2.2a.jar','lib/bundles/slf4j.api_1.7.25.jar','lib/bundles/cmof_1.4.0.201912191136/cmof14.jar','lib/bundles/cmof_1.4.0.201912191136/tas.jar','lib/bundles/com.nomagic.ci.binary_17.0.5.v20191219-1130.jar','lib/bundles/com.nomagic.ci.metamodel.project_17.0.5.v20191219-1130.jar','lib/bundles/com.nomagic.ci.persistence.local_17.0.5.v20191219-1130.jar','lib/bundles/com.nomagic.ci.persistence_17.0.5.v20191219-1130.jar','lib/bundles/com.nomagic.ci.services_17.0.5.v20191219-1130.jar','lib/bundles/com.nomagic.ci_17.0.5.v20191219-1130.jar','lib/bundles/com.nomagic.magicdraw.ce_18.1.0.201912191136.jar','lib/bundles/com.nomagic.magicdraw.core.diagram_18.1.0.201912191136.jar','lib/bundles/com.nomagic.magicdraw.core.project.options_18.1.0.201912191136.jar','lib/bundles/com.nomagic.magicdraw.core_1.0.0.201912191136.jar','lib/bundles/com.nomagic.magicdraw.esi.binary.metamodel_18.1.0.201912191136.jar','lib/bundles/com.nomagic.magicdraw.esi.esiproject_18.1.0.201912191136.jar','lib/bundles/com.nomagic.magicdraw.esi.uuidmap_18.1.0.201912191136.jar','lib/bundles/com.nomagic.magicdraw.foundation_2.0.0.201912191136.jar','lib/bundles/com.nomagic.magicdraw.osgi.fragment_1.0.0.201912191136.jar','lib/bundles/com.nomagic.magicdraw.security_18.3.0.201912191136.jar','lib/bundles/com.nomagic.magicdraw.uml2_2.5.1.201912191136.jar','lib/bundles/com.nomagic.magicdraw_17.0.5.201912191136.jar','lib/bundles/de.schlichtherle.truezip_7.4.3.v20191219-1130/lib/truezip-driver-zip-7.4.3.jar','lib/bundles/de.schlichtherle.truezip_7.4.3.v20191219-1130/lib/truezip-kernel-7.4.3.jar','lib/bundles/javax.jmi_1.0.0.201912191136/javax_jmi-1_0-fr.jar','lib/com.nomagic.osgi.launcher-17.0.5-SNAPSHOT.jar','lib/commons-compress-1.3.jar','lib/commons-httpclient-3.1.jar','lib/commons-logging-1.0.4.jar','lib/concurrent.jar','lib/EccpressoAll.jar','lib/HTMLEditorLight.jar','lib/JUnitParams-1.0.1.jar','lib/ehcache-2.10.1.jar','lib/flexlm.jar','lib/graphics/clibwrapper_jiio.jar','lib/graphics/freehep-base.jar','lib/graphics/freehep-graphics2d.jar','lib/graphics/freehep-graphicsio-emf.jar','lib/graphics/freehep-graphicsio-ps.jar','lib/graphics/freehep-graphicsio.jar','lib/graphics/jai_imageio.jar','lib/gson-2.2.4.jar','lib/hunspell-bridj-1.0.5-SNAPSHOT.jar','lib/javassist.jar','lib/jhall.jar','lib/jide-action.jar','lib/jide-charts.jar','lib/jide-common.jar','lib/jide-components.jar','lib/jide-diff.jar','lib/jide-dock.jar','lib/jide-editor.jar','lib/jide-gantt.jar','lib/jide-grids.jar','lib/jide-shortcut.jar','lib/jimi.jar','lib/jna.jar','lib/jnp-client.jar','lib/jsr250-api-1.0.jar','lib/jsr305.jar','lib/jtidy.jar','lib/lucene-analyzers-common-7.5.0.jar','lib/lucene-core-7.5.0.jar','lib/lucene-misc-7.5.0.jar','lib/poi-3.14-20160307.jar','lib/poi-ooxml-3.14-20160307.jar','lib/poi-ooxml-schemas-3.14-20160307.jar','lib/webservice/axis-config.jar','lib/webservice/axis.jar','lib/webservice/commons-discovery-0.2.jar','lib/webservice/jaxrpc.jar','lib/webservice/mdserviceclient.jar','lib/webservice/rsclient.jar','lib/webservice/wsdl4j-1.5.1.jar','lib/xalan.jar','lib/xmlbeans-2.6.0.jar','lib/y.jar']
+String docbookNameVersion = 'docbook-xsl-1.79.1'
+String fopNameVersion = 'fop-1.1'
 
 buildscript {
     repositories {
@@ -63,12 +65,25 @@ repositories {
     }
     else {
         ivy {
-            // http://download1.nomagic.com/magicdraw185sp2/MagicDraw_185_sp2_no_install.zip
             url 'http://download1.nomagic.com/'
             layout 'pattern', {
                 artifact '/[module][revision]/[classifier].[ext]'
             }
         }
+		ivy {
+			url 'https://sourceforge.net/projects/docbook/files/docbook-xsl/'
+			layout 'pattern', {
+                artifact '[revision]/[classifier].[ext]' 
+            }
+        }
+        ivy {    //downloading apache fop (version is defined in precompile)
+		    url 'https://archive.apache.org/dist/xmlgraphics/fop/binaries/'
+		    //url 'https://mirror.nodesdirect.com/apache/xmlgraphics/fop/binaries/' for newer version
+            layout 'pattern', {
+                artifact '[classifier].[ext]'
+            }
+		}
+		
     }
 }
 
@@ -132,7 +147,7 @@ dependencies {
     compile group: 'org.openmbee.mms', name: 'mms-java-client', version: '3.4.2'
 
     compile group: 'com.beust', name: 'jcommander', version: '1.72'
-
+	
     // Test Dependencies
     //testCompile 'junit:junit:4.11'
     testCompile group: 'org.gradle', name: 'gradle-core', version: '3.5.1'
@@ -153,41 +168,71 @@ dependencies {
         preCompile group: 'com.nomagic', name: 'demomagicdraw', version: '190sp3', classifier: 'MagicDraw_Demo_190_sp3_no_install', ext: 'zip'
         preCompile group: 'com.nomagic', name: 'sysml', version: '190sp3', classifier: 'SysML_Plugin_190_sp3_bundle', ext: 'zip'
         preCompile group: 'com.nomagic', name: 'cst', version: '190sp3', classifier: 'Cameo_Simulation_Toolkit_Plugin_190_sp3', ext: 'zip'
+        preCompile group: 'org.apache.fop',name: 'fop', version: '1.1', classifier: fopNameVersion + '-bin', ext: 'zip'
+        preCompile group: 'net.sourceforge.docbook', name: 'docbook-xsl', version: '1.79.1', classifier: docbookNameVersion, ext:'zip'
     }
 
     // This ensures classpath load order to match the MagicDraw provided order and then includes extras needed for non-OpenAPI stuff.
     // This was necessary because of the Application class stubbing that was done in the chromium libraries.
-    compile files(classpathLibraries.collect { 'build/dependency-cache/extracted/' + it })
-    compile fileTree(dir: 'build/dependency-cache/extracted', include: ['lib/**/*.jar', 'plugins/**/*.jar'], exclude: ([ classpathLibraries, ['plugins/com.nomagic.collaborator.publisher/**/*.jar', 'plugins/com.nomagic.magicdraw.emfuml2xmi*/**/*.jar', 'plugins/com.nomagic.magicdraw.automaton/lib/engines/**/*.jar', 'plugins/tomsawyer/**/*.jar', 'plugins/com.intercax.syndeia.md/**/*.jar'] ]).flatten())
+    compile files(classpathLibraries.collect { 'build/dependency-cache/extracted/magicdraw/' + it })
+    compile fileTree(dir: 'build/dependency-cache/extracted/magicdraw', include: ['lib/**/*.jar', 'plugins/**/*.jar'], exclude: ([ classpathLibraries, ['plugins/com.nomagic.collaborator.publisher/**/*.jar', 'plugins/com.nomagic.magicdraw.emfuml2xmi*/**/*.jar', 'plugins/com.nomagic.magicdraw.automaton/lib/engines/**/*.jar', 'plugins/tomsawyer/**/*.jar', 'plugins/com.intercax.syndeia.md/**/*.jar'] ]).flatten())
     compile fileTree(dir: 'lib', include: ['**/*.jar'])
+    compile files('build/dependency-cache/extracted/fop/jars/fop-1.1.jar', 'build/dependency-cache/extracted/fop/jars/xmlgraphics-commons-1.5.jar')
 }
 
 task extractDependencies {
     configurations.preCompile.resolvedConfiguration.resolvedArtifacts.each { artifact ->
         inputs.file artifact.file
-        def zipFile = new ZipFile(artifact.file)
-        zipFile.entries().each { entry ->
-            if (!entry.isDirectory()) {
-                outputs.file 'build/dependency-cache/extracted/' + entry.getName()
-            }
-        }
     }
     doLast {
         inputs.files.each { archive ->
+			//unzip fop and pur jars in plugin directory and its license in tmp/license3rdparty 
+			if ( archive.getName().endsWith(fopNameVersion + '-' + fopNameVersion + '-bin.zip')){
+				//extract fop zip
+				copy {
+					from zipTree(archive)
+					into archive.getParentFile().getAbsolutePath()
+				}
+				copy {
+					from archive.getParentFile().getAbsolutePath() + '/' +fopNameVersion + '/build/fop.jar'
+					into 'build/dependency-cache/extracted/fop/jars'
+					rename { String fileName -> fopNameVersion + '.jar'}
+				}
+				
+				copy {
+					from fileTree(dir: archive.getParentFile().getAbsolutePath() + '/' + fopNameVersion +'/lib', include: '*.jar', exclude: 'commons*.jar')
+					into 'build/dependency-cache/extracted/fop/jars'
+				}
+				copy { //license3rdparty
+					from archive.getParentFile().getAbsolutePath() + '/' +fopNameVersion + '/LICENSE'
+					into 'build/dependency-cache/extracted/fop/license3rdparty'
+					rename { String fileName -> 'apache.fop.LICENSE'}
+				}
+				copy { //license3rdparty
+					from fileTree(dir: archive.getParentFile().getAbsolutePath() + '/'+ fopNameVersion+ '/lib', include: '*.LICENSE.txt', exclude: 'commons*LICENSE.txt')
+					into 'build/dependency-cache/extracted/fop/license3rdparty'
+				}
+			}
+			else if( archive.getName().endsWith(docbookNameVersion + '-' + docbookNameVersion +'.zip')){
+				copy {
+						from archive
+						into 'build/dependency-cache/extracted/docbook'
+					}
+			}
+			else {	
+				copy {
+					from zipTree(archive)
+					into 'build/dependency-cache/extracted/magicdraw'
+				}
+			}
+        }
+        fileTree(dir: 'build/dependency-cache/extracted/magicdraw', include: '*.zip').each { archive ->
             copy {
                 from zipTree(archive)
-                into 'build/dependency-cache/extracted'
+                into 'build/dependency-cache/extracted/magicdraw'
             }
         }
-        fileTree(dir: 'build/dependency-cache/extracted', include: '*.zip').each { archive ->
-            copy {
-                from zipTree(archive)
-                into 'build/dependency-cache/extracted'
-            }
-        }
-        /*fileTree(dir: 'build/dependency-cache/extracted').each { file ->
-            outputs.file file
-        }*/
+        
     }
 }
 compileJava.dependsOn extractDependencies
@@ -245,12 +290,19 @@ task javadocZip(type: Zip, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
+task license3rdPartyZip(type: Zip) {
+	classifier = 'license3rdparty'
+    from "build/dependency-cache/extracted/fop/license3rdparty"
+}
+
+
 class PreDist extends DefaultTask {
     String humanVersion
     String internalVersion
     String groupName
     String buildTimestamp
     String descriptor
+    String docbookVersion
 
     @TaskAction
     void executeTask() {
@@ -273,7 +325,57 @@ class PreDist extends DefaultTask {
         project.fileTree(dir: 'build/generated-dist', include: '**/*${group}*/**').each { file ->
             file.renameTo(project.file(file.getAbsolutePath().replace('${group}', "${groupName}")))
         }
-
+        //docbook unzip and put only necessary files to generated-dist
+		project.copy {
+			from project.zipTree("build/dependency-cache/extracted/docbook/" + docbookVersion + "-" + docbookVersion+".zip")
+			into "build/dependency-cache/extracted/docbook"
+		}
+		project.copy {
+			from "build/dependency-cache/extracted/docbook/" + docbookVersion + "/fo"
+			into "build/generated-dist/plugins/${groupName}/docbook-xsl/fo"
+		}
+		project.copy{
+			from "build/dependency-cache/extracted/docbook/" + docbookVersion + "/common"
+			into "build/generated-dist/plugins/${groupName}/docbook-xsl/common"
+		}
+		project.copy {	
+			from "build/dependency-cache/extracted/docbook/" + docbookVersion + "/COPYING"
+			from "build/dependency-cache/extracted/docbook/" + docbookVersion + "/README"
+			from "build/dependency-cache/extracted/docbook/" + docbookVersion + "/RELEASE-NOTES.txt"
+			from "build/dependency-cache/extracted/docbook/" + docbookVersion + "/VERSION.xsl"
+			into "build/generated-dist/plugins/${groupName}/docbook-xsl"
+		}
+		project.copy {
+			from "build/dependency-cache/extracted/docbook/" + docbookVersion + "/highlighting/common.xsl"
+			into "build/generated-dist/plugins/${groupName}/docbook-xsl/highlighting"
+		}
+		project.copy {
+			from "build/dependency-cache/extracted/docbook/" + docbookVersion + "/html/chunker.xsl"
+			into "build/generated-dist/plugins/${groupName}/docbook-xsl/html"
+		}
+		project.copy {
+			from "build/dependency-cache/extracted/docbook/" + docbookVersion + "/lib/build.xml"
+			from "build/dependency-cache/extracted/docbook/" + docbookVersion + "/lib/lib.xsl"
+			into "build/generated-dist/plugins/${groupName}/docbook-xsl/lib"
+		}
+		project.copy {
+			from "build/dependency-cache/extracted/docbook/" + docbookVersion + "/profiling/profile-mode.xsl"
+			into "build/generated-dist/plugins/${groupName}/docbook-xsl/profiling"
+		}
+		
+				
+		//including docbook license files in the plugin directory
+		project.copy {
+			from project.getTasks().getByName('license3rdPartyZip')
+			into "build/generated-dist/plugins/${groupName}/license3rdparty"
+		}
+		
+		//including fop jar files in the plugin directory
+		project.copy {
+			from "build/dependency-cache/extracted/fop/jars"
+			into "build/generated-dist/plugins/${groupName}"
+		}
+	
         String pluginLibraries = ''
         project.fileTree(dir: "build/generated-dist/plugins/${groupName}", include: '**/*.jar').each { file ->
             pluginLibraries += '\t\t<library name=\"' + file.absolutePath.replace(File.separator, '/').replaceAll(~/.*build\/generated-dist\/plugins\/${groupName}\//, '') + '\"/>' + System.lineSeparator()
@@ -308,9 +410,11 @@ task preDist(type: PreDist) {
     groupName = magicdDrawGroupName
     buildTimestamp = timestamp
     descriptor = descriptorFile
+    docbookVersion = docbookNameVersion
 }
 preDist.dependsOn jar
 preDist.dependsOn javadocZip
+preDist.dependsOn license3rdPartyZip
 
 distributions {
     main {
@@ -404,7 +508,7 @@ installDist {
     doLast {
         copy {
             fileMode 0755
-            from 'build/dependency-cache/extracted'
+            from 'build/dependency-cache/extracted/magicdraw'
             from 'build/plugin'
             into 'build/install'
         }
